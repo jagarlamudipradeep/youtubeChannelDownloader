@@ -20,6 +20,7 @@ async function downloadVideo(playlistDirname, video, videoTitle) {
                 let info = await ytdl.getInfo(video.id);
                 const qualityItags = ["22", "18", "136", "137", "247", "248", "135", "134"];
                 let format = null;
+
                 for (const quality of qualityItags) {
                     format = ytdl.chooseFormat(info.formats, { quality: quality });
                     if (format) {
@@ -66,10 +67,12 @@ async function downloadVideos(playlistDirname, videosInfo, noOfVideosDownloadAta
     try {
         const videosList = videosInfo.videos;
         const groupedVideos = splitArrayIntoChunks(videosList, noOfVideosDownloadAtaTime);
+
         for (let index = 0; index < groupedVideos.length; index++) {
             console.log("");
             const videos = groupedVideos[index];
             const videoPromises = [];
+
             for (let j = 0; j < videos.length; j++) {
                 const video = videos[j];
                 const videoNo = noOfVideosDownloadAtaTime * index + j + 1;
@@ -84,6 +87,7 @@ async function downloadVideos(playlistDirname, videosInfo, noOfVideosDownloadAta
                 const video = videos[j];
                 const videoNo = noOfVideosDownloadAtaTime * index + j + 1;
                 const videoTitle = `${videoNo}.) ${replaceString(video.title)}`;
+
                 if (videosResult[j].status === "fulfilled") {
                     console.log(`Downloaded video ${videoNo}/${videosList.length}:   [ ${videoTitle} ]`);
                 } else {
@@ -107,6 +111,7 @@ async function downloadVideos(playlistDirname, videosInfo, noOfVideosDownloadAta
 async function downloadPlaylist(youtube, playlistDirname, playlist, noOfVideosDownloadAtaTime) {
     try {
         const videosInfo = await getvideosInfo(youtube, playlist.id);
+
         if (videosInfo.totalResults) {
             console.log(`Total number of videos: ${videosInfo.totalResults}, videos array length: ${videosInfo.videos.length}`);
             await downloadVideos(playlistDirname, videosInfo, noOfVideosDownloadAtaTime);
@@ -117,7 +122,7 @@ async function downloadPlaylist(youtube, playlistDirname, playlist, noOfVideosDo
         console.error(`Error downloading playlist [ ${playlist?.title} ]: ${error.message}`);
         throw error;
     }
-};
+}
 
 
 
@@ -133,18 +138,24 @@ async function downloadPlaylist(youtube, playlistDirname, playlist, noOfVideosDo
 async function downloadPlaylists(youtube, channelDir, playlistsInfo, fromIndex, toIndex, noOfVideosDownloadAtaTime) {
     try {
         const playlists = playlistsInfo.playlists;
+
         if (!fromIndex || fromIndex <= 0) {
-            fromIndex = 1
+            fromIndex = 1;
         }
+
         if (!toIndex || toIndex <= 0 || toIndex > playlists.length) {
             toIndex = playlists.length;
         }
+
         for (let index = fromIndex - 1; index < toIndex; index++) {
             const playlist = playlists[index];
             const playlistDirname = createDir(channelDir, `${index + 1}.) ${replaceString(playlist.title)}`);
+
             console.log(`Started downloading playlist ${index + 1}/${playlists.length} ::::: ${index + 1}.) ${playlist.title}`);
             console.log("--------------------------------------------------------------------------------------------");
+
             await downloadPlaylist(youtube, playlistDirname, playlist, noOfVideosDownloadAtaTime);
+
             console.log(`\nCompleted downloading playlist ${index + 1}/${playlists.length} ::::: ${index + 1}.) ${playlist.title}`);
             console.log("--------------------------------------------------------------------------------------------\n\n");
         }

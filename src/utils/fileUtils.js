@@ -22,6 +22,7 @@ function createDir(basePath, folderName) {
     } else {
       console.log(`Folder already exists at ${targetDir}`);
     }
+
     return targetDir;
   } catch (error) {
     console.error(`Error creating directory: ${error.message}`);
@@ -40,6 +41,7 @@ function createChannelDir(channelName) {
     const downloadedChannelsDir = path.join(__dirname, "downloadedChannels");
     const replacedChannelName = replaceString(channelName);
     const channelDir = createDir(downloadedChannelsDir, replacedChannelName);
+
     return channelDir;
   } catch (error) {
     console.error(`Error creating channel directory: ${error.message}`);

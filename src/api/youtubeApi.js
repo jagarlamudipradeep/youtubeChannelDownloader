@@ -12,6 +12,7 @@ async function getChannelInfo(youtube, channelName) {
             type: "channel",
             maxResults: 1,
         });
+
         const channelId = channelDetails?.data?.items?.[0]?.id?.channelId;
         return channelId ? { channelId } : null;
     } catch (error) {
@@ -39,6 +40,7 @@ async function getPlaylistsInfo(youtube, channelId) {
                 pageToken: nextPageToken,
                 maxResults: 50, // Maximum number of results to return (can be up to 50)
             });
+
             const playlistData = playlists?.data?.items || [];
             for (const {
                 id,
@@ -82,6 +84,7 @@ async function getvideosInfo(youtube, playlistId) {
                 pageToken: nextPageToken,
                 maxResults: 50, // Maximum number of results to return (can be up to 50)
             });
+
             const videosData = videos?.data?.items || [];
             for (const {
                 snippet: {

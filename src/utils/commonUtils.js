@@ -8,11 +8,13 @@ function splitArrayIntoChunks(array, k) {
     if (!Array.isArray(array) || typeof k !== 'number' || k <= 0) {
         throw new Error("Invalid input. Expected an array and a positive number for chunk size.");
     }
+
     const result = [];
     for (let i = 0; i < array.length; i += k) {
         const chunk = array.slice(i, i + k);
         result.push(chunk);
     }
+
     return result;
 }
 
@@ -25,6 +27,7 @@ function replaceString(str) {
     if (typeof str !== 'string') {
         throw new Error('Invalid input. Expected a string.');
     }
+
     return str.replace(/[/\\?%*:|"<>]/g, '-');
 }
 
