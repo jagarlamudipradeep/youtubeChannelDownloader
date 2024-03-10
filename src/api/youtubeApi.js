@@ -42,11 +42,7 @@ async function getPlaylistsInfo(youtube, channelId) {
             });
 
             const playlistData = playlists?.data?.items || [];
-            for (const {
-                id,
-                snippet: { title },
-                contentDetails: { itemCount },
-            } of playlistData) {
+            for (const { id, snippet: { title }, contentDetails: { itemCount }, } of playlistData) {
                 playlistsInfo.playlists.push({ id, title, videosCount: itemCount });
             }
 
@@ -86,13 +82,7 @@ async function getvideosInfo(youtube, playlistId) {
             });
 
             const videosData = videos?.data?.items || [];
-            for (const {
-                snippet: {
-                    resourceId: { videoId },
-                    title,
-                },
-                status: { privacyStatus },
-            } of videosData) {
+            for (const { snippet: { resourceId: { videoId }, title, }, status: { privacyStatus }, } of videosData) {
                 videosInfo.videos.push({ id: videoId, title, privacyStatus });
             }
 
